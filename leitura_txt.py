@@ -14,21 +14,24 @@ class SpedProcessor(ab, ar):
         self.file_content = file_content
         self.df = None
 
-    def lendoELimpandoDadosSped(self):
+    def LendoELimpandoDadosSped(self):
         data = []
-        self.file_content.seek(0)  # Garante que estamos lendo do início
+        self.file_content.seek(0)  # Voltar ao início do arquivo para garantir a leitura
 
-        with open(self.file_path, 'r', encoding='ISO-8859-1') as file:
-            for linha in file:
-                linha = linha.strip()
-                if linha.startswith('|'):
-                    valores = linha.split('|')[1:]  # Remove o primeiro '|'
-                    data.append(valores)
+        # Lendo o conteúdo do arquivo diretamente da memória
+        lines = self.file_content.read().decode('ISO-8859-1').splitlines()
+
+        for linha in lines:
+            linha = linha.strip()
+            if linha.startswith('|'):
+                valores = linha.split('|')[1:]  # Remove o primeiro '|'
+                data.append(valores)
 
         # Criar um DataFrame
         self.df = pd.DataFrame(data)
 
         # Aplicando transformações
+        self.calculando_contadores_de_linhas()
         self.dados_willian()
         self.alterar_F500()
         self.alterar_F525()
@@ -57,14 +60,14 @@ class SpedProcessor(ab, ar):
         return result
 
 
-# Configuração do Streamlit
+#Configuração do Streamlit
 st.set_page_config(page_title="Alterar Blocos do arquivo .txt", layout="wide")
 st.title("Alterações automáticas do arquivo .txt")
 
-# Upload de múltiplos arquivos
+#Upload de múltiplos arquivos
 uploaded_files = st.file_uploader("Carregue os arquivos .txt", type=["txt"], accept_multiple_files=True)
 
-# Processamento dos arquivos
+#Processamento dos arquivos
 if uploaded_files:
     processed_files = {}
 
@@ -73,13 +76,13 @@ if uploaded_files:
         new_name = os.path.splitext(original_name)[0] + "_retificado.txt"  # Adiciona _retificado no nome
         file_name = uploaded_file.name
         processor = SpedProcessor(file_name, uploaded_file)
-        df = processor.lendoELimpandoDadosSped()
+        df = processor.LendoELimpandoDadosSped()
         processed_txt = processor.devolvendo_txt()
 
-        # Armazena o conteúdo do arquivo processado em um dicionário
+        #Armazena o conteúdo do arquivo processado em um dicionário
         processed_files[file_name] = processed_txt
 
-    # Criar o arquivo .zip com os arquivos processados
+    #Criar o arquivo .zip com os arquivos processados
     zip_buffer = BytesIO()
 
     with zipfile.ZipFile(zip_buffer, "w") as zip_file:
@@ -88,7 +91,7 @@ if uploaded_files:
 
     zip_buffer.seek(0)
 
-    # Botão de download do arquivo ZIP
+    #Botão de download do arquivo ZIP
     st.download_button(
         label="Baixar Arquivos Processados (.zip)",
         data=zip_buffer,
