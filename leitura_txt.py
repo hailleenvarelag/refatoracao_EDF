@@ -47,6 +47,7 @@ class SpedProcessor(ab, ar):
         self.alterar_C170()
         self.alterar_A100()
         self.alterar_C100()
+        self.adicionar_registros_M()
 
         return self.df
 
@@ -54,8 +55,8 @@ class SpedProcessor(ab, ar):
         formatted_lines = self.df.apply(lambda row: '|' + '|'.join(row.dropna().astype(str)), axis=1)
         result = '\n'.join(formatted_lines)
 
-        if result.endswith('|'):
-            result = result[:-77]  # Removendo excesso de "|"
+        # if result.endswith('|'):
+        #     result = result[:-77]  # Removendo excesso de "|"
 
         return result
 
