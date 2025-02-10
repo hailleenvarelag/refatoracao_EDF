@@ -33,26 +33,28 @@ class SpedProcessor(ab, ar):
         # Aplicando transformações
         self.calculando_contadores_de_linhas()
         self.dados_willian()
-        self.alterar_F500()
-        self.alterar_F525()
-        self.zerar_M200()  
-        self.zerar_M600()
-        self.alterar_M400()
-        self.alterar_M800()
-        self.excluir_M210()
-        self.excluir_M610()
-        self.alterar_M410()
-        self.alterar_M810()
-        self.alterar_A170()
-        self.alterar_C170()
-        self.alterar_A100()
-        self.alterar_C100()
-        self.adicionar_registros_M()
+        #self.alterar_F500()
+        #self.alterar_F525()
+        #self.zerar_M200()  
+        #self.zerar_M600()
+        #self.alterar_M400()
+        #self.alterar_M800()
+        #self.excluir_M210()
+        #self.excluir_M610()
+        #self.alterar_M410()
+        #self.alterar_M810()
+        #self.alterar_A170()
+        #self.alterar_C170()
+        #self.alterar_A100()
+        #self.alterar_C100()
+        #self.adicionar_registros_M()
+
+        #self.zerar_C170_Col1_0()
 
         return self.df
 
     def devolvendo_txt(self):
-        formatted_lines = self.df.apply(lambda row: '|' + '|'.join(row.dropna().astype(str)), axis=1)
+        formatted_lines = self.df.apply(lambda row: '|'.join(row.dropna().astype(str)), axis=1)
         result = '\n'.join(formatted_lines)
 
         # if result.endswith('|'):
@@ -64,6 +66,7 @@ class SpedProcessor(ab, ar):
 #Configuração do Streamlit
 st.set_page_config(page_title="Alterar Blocos do arquivo .txt", layout="wide")
 st.title("Alterações automáticas do arquivo .txt")
+
 
 #Upload de múltiplos arquivos
 uploaded_files = st.file_uploader("Carregue os arquivos .txt", type=["txt"], accept_multiple_files=True)
@@ -85,6 +88,8 @@ if uploaded_files:
 
     #Criar o arquivo .zip com os arquivos processados
     zip_buffer = BytesIO()
+
+    st.dataframe(df)
 
     with zipfile.ZipFile(zip_buffer, "w") as zip_file:
         for file_name, content in processed_files.items():
