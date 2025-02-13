@@ -30,26 +30,27 @@ class SpedProcessor(ab, ar):
         # Criar um DataFrame
         self.df = pd.DataFrame(data)
 
-        # Aplicando transformações
-        self.calculando_contadores_de_linhas()
-        self.dados_willian()
-        #self.alterar_F500()
-        #self.alterar_F525()
-        #self.zerar_M200()  
-        #self.zerar_M600()
-        #self.alterar_M400()
-        #self.alterar_M800()
-        #self.excluir_M210()
-        #self.excluir_M610()
-        #self.alterar_M410()
-        #self.alterar_M810()
-        #self.alterar_A170()
-        #self.alterar_C170()
-        #self.alterar_A100()
-        #self.alterar_C100()
-        #self.adicionar_registros_M()
+        # codigos = [
+        #         9.01, 17.11, 12.02, 17.06, 13.03, 37.01, 3.05, 9.02,
+        #         12.08, 3.03, 12.01, 12.13, 12.12, 12.13, 12.14, 12.15,
+        #         12.16, 12.07, 12.03, 12.04, 12.05, 12.11, 12.06
+        #     ]
 
-        #self.zerar_C170_Col1_0()
+
+        # if self.df[(self.df[0] == '0200') & (self.df[6] == '09') & 
+        #         (self.df[10].isin(codigos))]:
+
+
+        #Aplicando transformações
+        #self.calculando_contadores_de_linhas()
+        self.dados_willian()
+        self.alterar_F500()
+        self.alterar_F525()
+        self.alteracao_aliquota_C170()
+        self.agregado_F600_M200()
+        self.agregado_F600_M600()
+        self.alterando_M210_Col7()
+        self.alterandoM610_Col_7()
 
         return self.df
 
